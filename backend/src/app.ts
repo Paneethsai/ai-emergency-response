@@ -10,7 +10,27 @@ import userRoutes from './routes/userRoutes';
 
 const app = express();
 
-app.use(cors());
+const ALLOWED_ORIGINS = [
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'https://ai-emergency-response.vercel.app',
+  // Allow any vercel.app subdomain for preview deployments
+  /^https:\/\/ai-emergency-response.*\.vercel\.app$/,
+  // Allow custom domain if set
+  ...(process.env.FRONTEND_URL ? [process.env.FRONTEND_URL] : []),
+];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true); // allow server-to-server
+    const allowed = ALLOWED_ORIGINS.some(o =>
+      typeof o === 'string' ? o === origin : o.test(origin)
+    );
+    callback(allowed ? null : new Error('Not allowed by CORS'), allowed);
+  },
+  credentials: true,
+}));
+
 app.use(helmet());
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
