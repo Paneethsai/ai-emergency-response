@@ -61,13 +61,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const devLogin = async (role?: string) => {
     setLoading(true);
+    const targetRole = role || 'Citizen';
     try {
-      const userData = await devLoginWithBackend(role);
+      const userData = await devLoginWithBackend(targetRole);
       setUser(userData);
       localStorage.setItem('user', JSON.stringify(userData));
     } catch (error) {
-      console.error('Dev login failed:', error);
-      throw error;
+      console.warn('Backend dev-login endpoint unreachable, using client-side fallback:', error);
+      const mockUser: User = {
+        _id: `dev-id-${targetRole.toLowerCase()}`,
+        name: `Dev ${targetRole.replace('_', ' ')}`,
+        email: `dev@${targetRole.toLowerCase()}.com`,
+        role: targetRole,
+        phone: '555-0199',
+        token: `mock-dev-jwt-token-${targetRole.toLowerCase()}`
+      };
+      setUser(mockUser);
+      localStorage.setItem('user', JSON.stringify(mockUser));
     } finally {
       setLoading(false);
     }
