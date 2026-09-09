@@ -35,6 +35,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return;
     }
     const unsubscribe = onAuthStateChanged(auth, async (fbUser: FirebaseUser | null) => {
+      const saved = localStorage.getItem('user');
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (parsed && (parsed._id?.startsWith('dev-') || parsed.token?.includes('mock'))) {
+            setUser(parsed);
+            setLoading(false);
+            return;
+          }
+        } catch (e) {}
+      }
+
       if (!fbUser) {
         setUser(null);
         localStorage.removeItem('user');
