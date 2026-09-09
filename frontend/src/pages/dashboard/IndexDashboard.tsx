@@ -15,10 +15,13 @@ const ROLE_CONFIG: Record<string, { label: string; emoji: string; gradient: stri
   citizen: { label: 'Citizen', emoji: '🏙️', gradient: 'from-cyan-600 to-blue-500', glow: 'rgba(6,182,212,0.4)' },
 };
 
-const SplashScreen = ({ role, name }: { role: string; name: string }) => {
+const SplashScreen = ({ role, name, onDismiss }: { role: string; name: string; onDismiss: () => void }) => {
   const config = ROLE_CONFIG[role] || ROLE_CONFIG['citizen'];
   return (
-    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-950 gap-6">
+    <div 
+      onClick={onDismiss}
+      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-950 gap-6 cursor-pointer"
+    >
       <div
         className="text-7xl animate-bounce"
         style={{ filter: `drop-shadow(0 0 24px ${config.glow})` }}
@@ -30,10 +33,11 @@ const SplashScreen = ({ role, name }: { role: string; name: string }) => {
           Welcome back, {name.split(' ')[0]}!
         </h1>
         <p className="text-gray-400 mt-2 text-lg font-semibold">{config.label} · AI Emergency Response System</p>
+        <p className="text-xs text-gray-500 mt-3 font-semibold">Click anywhere to skip</p>
       </div>
-      <div className="w-48 h-1 rounded-full bg-white/5 overflow-hidden mt-4">
-        <div className={`h-full rounded-full bg-gradient-to-r ${config.gradient} animate-[loading_1.2s_ease-in-out_forwards]`}
-          style={{ animation: 'slideIn 1.3s ease-out forwards' }} />
+      <div className="w-48 h-1 rounded-full bg-white/5 overflow-hidden mt-2">
+        <div className={`h-full rounded-full bg-gradient-to-r ${config.gradient}`}
+          style={{ animation: 'slideIn 0.7s ease-out forwards' }} />
       </div>
       <style>{`@keyframes slideIn { from { width:0%; } to { width:100%; } }`}</style>
     </div>
@@ -51,13 +55,13 @@ const IndexDashboard = () => {
     if (!sessionStorage.getItem(key)) {
       setShowSplash(true);
       sessionStorage.setItem(key, '1');
-      const t = setTimeout(() => setShowSplash(false), 1800);
+      const t = setTimeout(() => setShowSplash(false), 700);
       return () => clearTimeout(t);
     }
   }, [user?._id]);
 
   if (showSplash && user?.name) {
-    return <SplashScreen role={role} name={user.name} />;
+    return <SplashScreen role={role} name={user.name} onDismiss={() => setShowSplash(false)} />;
   }
 
   if (role === 'admin') return <AdminDashboard />;
