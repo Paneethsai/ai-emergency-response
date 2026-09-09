@@ -87,6 +87,8 @@ const ResponderDashboard = () => {
       }
     };
     fetchIncidents();
+    const interval = setInterval(fetchIncidents, 15000);
+    return () => clearInterval(interval);
   }, []);
 
   const handleStatusUpdate = async (id: string, newStatus: string) => {

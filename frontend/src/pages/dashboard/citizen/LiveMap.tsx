@@ -115,8 +115,8 @@ const LiveMap = () => {
         (err) => console.warn('Could not get user location', err)
       );
     }
-    // Auto-refresh every 60 seconds
-    const interval = setInterval(fetchIncidents, 60000);
+    // Auto-refresh every 15 seconds
+    const interval = setInterval(fetchIncidents, 15000);
     return () => clearInterval(interval);
   }, [fetchIncidents]);
 

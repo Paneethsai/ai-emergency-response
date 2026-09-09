@@ -32,6 +32,8 @@ const CitizenHome = () => {
       finally { setLoading(false); }
     };
     load();
+    const interval = setInterval(load, 10000);
+    return () => clearInterval(interval);
   }, []);
 
   const activeIncidents = incidents.filter(i => i.status !== 'Resolved');

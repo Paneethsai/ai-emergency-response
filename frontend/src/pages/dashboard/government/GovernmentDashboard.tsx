@@ -61,6 +61,8 @@ const GovernmentDashboard = () => {
       }
     };
     fetchIncidents();
+    const interval = setInterval(fetchIncidents, 15000);
+    return () => clearInterval(interval);
   }, []);
 
   const total = incidents.length;
