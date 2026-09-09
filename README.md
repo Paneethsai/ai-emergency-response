@@ -3,7 +3,8 @@
 > A full-stack, AI-powered emergency dispatch and response platform built with React, Node.js, MongoDB, Firebase Auth, and Google Gemini AI.
 
 
-link:https://ai-emergency-response-frontend.vercel.app/login
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Vercel-success?style=for-the-badge&logo=vercel)](https://ai-emergency-response-frontend.vercel.app/login)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/Paneethsai/ai-emergency-response)
 
 ![AI Emergency Response](https://img.shields.io/badge/Status-Active-brightgreen?style=for-the-badge)
 ![Node.js](https://img.shields.io/badge/Node.js-18+-339933?style=for-the-badge&logo=node.js&logoColor=white)
