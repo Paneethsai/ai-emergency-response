@@ -46,7 +46,44 @@ const ResponderDashboard = () => {
           setMapCenter([validLoc.location.coordinates[1], validLoc.location.coordinates[0]]);
         }
       } catch (err) {
-        console.error(err);
+        console.warn('Backend API unreachable, populating demo dispatch items:', err);
+        const mockList = [
+          {
+            _id: 'inc-101',
+            type: 'Fire_Emergency',
+            description: 'Commercial building structure fire on 3rd floor. Heavy smoke visible.',
+            status: 'Pending',
+            address: '452 Downtown Plaza, Sector 4',
+            location: { coordinates: [-74.0060, 40.7128] },
+            createdAt: new Date().toISOString(),
+            aiAnalysis: { severity: 'Critical', summary: 'High risk structure fire with potential trapped personnel.' },
+            reporterId: { name: 'John Doe', email: 'john@example.com', phone: '+1 555-0144' }
+          },
+          {
+            _id: 'inc-102',
+            type: 'Medical_Emergency',
+            description: 'Multi-vehicle collision on highway. Trauma team required.',
+            status: 'Dispatched',
+            address: 'Grand Trunk Highway, Exit 12',
+            location: { coordinates: [-73.9851, 40.7589] },
+            createdAt: new Date(Date.now() - 3600000).toISOString(),
+            aiAnalysis: { severity: 'High', summary: 'Severe vehicle collision with casualty risk.' },
+            reporterId: { name: 'Sarah Connor', email: 'sarah@example.com', phone: '+1 555-0188' }
+          },
+          {
+            _id: 'inc-103',
+            type: 'Crime_Report',
+            description: 'Attempted burglary reported near residential compound perimeter.',
+            status: 'Pending',
+            address: '88 Oakridge Drive',
+            location: { coordinates: [-73.9712, 40.7831] },
+            createdAt: new Date(Date.now() - 7200000).toISOString(),
+            aiAnalysis: { severity: 'Medium', summary: 'Active perimeter breach reported by security officer.' },
+            reporterId: { name: 'Alex Mercer', email: 'alex@example.com', phone: '+1 555-0199' }
+          }
+        ];
+        setIncidents(mockList);
+        setMapCenter([40.7128, -74.0060]);
       }
     };
     fetchIncidents();

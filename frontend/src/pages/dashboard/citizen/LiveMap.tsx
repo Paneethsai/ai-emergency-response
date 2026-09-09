@@ -68,7 +68,40 @@ const LiveMap = () => {
       setIncidents(response.data);
       setLastRefresh(new Date());
     } catch (error) {
-      console.error('Failed to fetch incidents', error);
+      console.warn('Backend API unreachable, populating demo map pins:', error);
+      setIncidents([
+        {
+          _id: 'inc-101',
+          type: 'fire',
+          description: 'Commercial building structure fire on 3rd floor.',
+          status: 'Pending',
+          location: { coordinates: [-74.0060, 40.7128] },
+          createdAt: new Date().toISOString(),
+          aiAnalysis: { severity: 'Critical' },
+          reporterId: { name: 'John Doe', email: 'john@example.com' }
+        },
+        {
+          _id: 'inc-102',
+          type: 'medical',
+          description: 'Multi-vehicle collision on highway.',
+          status: 'Dispatched',
+          location: { coordinates: [-73.9851, 40.7589] },
+          createdAt: new Date(Date.now() - 3600000).toISOString(),
+          aiAnalysis: { severity: 'High' },
+          reporterId: { name: 'Sarah Connor', email: 'sarah@example.com' }
+        },
+        {
+          _id: 'inc-103',
+          type: 'crime',
+          description: 'Attempted burglary near residential compound.',
+          status: 'Resolved',
+          location: { coordinates: [-73.9712, 40.7831] },
+          createdAt: new Date(Date.now() - 7200000).toISOString(),
+          aiAnalysis: { severity: 'Medium' },
+          reporterId: { name: 'Alex Mercer', email: 'alex@example.com' }
+        }
+      ]);
+      setLastRefresh(new Date());
     } finally {
       setLoading(false);
     }

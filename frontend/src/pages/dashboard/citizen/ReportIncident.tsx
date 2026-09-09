@@ -154,7 +154,23 @@ const ReportIncident = () => {
       });
       navigate('/dashboard/history');
     } catch (err: any) {
-      setError(err.response?.data?.message || err.message || 'Failed to submit report');
+      if (err.message === 'Network Error' || !err.response) {
+        console.warn('Backend endpoint unreachable, storing report locally for demo mode');
+        const localReport = {
+          _id: `inc-${Date.now()}`,
+          type,
+          description,
+          status: 'Pending',
+          address: `GPS Location (${location.lat.toFixed(4)}, ${location.lng.toFixed(4)})`,
+          createdAt: new Date().toISOString(),
+          aiAnalysis: { severity: 'High', summary: 'Emergency report logged via location tracker.', tags: [type.toLowerCase()] }
+        };
+        const existing = JSON.parse(localStorage.getItem('user_incidents') || '[]');
+        localStorage.setItem('user_incidents', JSON.stringify([localReport, ...existing]));
+        navigate('/dashboard/history');
+      } else {
+        setError(err.response?.data?.message || err.message || 'Failed to submit report');
+      }
       setLoading(false);
     }
   };

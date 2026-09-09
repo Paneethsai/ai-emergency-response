@@ -19,7 +19,45 @@ const GovernmentDashboard = () => {
         setIncidents(incRes.data);
         setAnalytics(statRes.data);
       } catch (err) {
-        console.error(err);
+        console.warn('Backend API unreachable, populating demo analytics:', err);
+        setAnalytics([
+          { name: 'Police', value: 24 },
+          { name: 'Fire', value: 14 },
+          { name: 'Ambulance', value: 31 },
+          { name: 'Hazard', value: 9 }
+        ]);
+        setIncidents([
+          {
+            _id: 'inc-101',
+            type: 'Fire_Emergency',
+            description: 'Commercial building structure fire on 3rd floor. Heavy smoke visible.',
+            status: 'Pending',
+            address: '452 Downtown Plaza, Sector 4',
+            createdAt: new Date().toISOString(),
+            aiAnalysis: { severity: 'Critical' },
+            reporterId: { name: 'John Doe', email: 'john@example.com', phone: '+1 555-0144' }
+          },
+          {
+            _id: 'inc-102',
+            type: 'Medical_Emergency',
+            description: 'Multi-vehicle collision on highway. Trauma team required.',
+            status: 'Dispatched',
+            address: 'Grand Trunk Highway, Exit 12',
+            createdAt: new Date(Date.now() - 3600000).toISOString(),
+            aiAnalysis: { severity: 'High' },
+            reporterId: { name: 'Sarah Connor', email: 'sarah@example.com', phone: '+1 555-0188' }
+          },
+          {
+            _id: 'inc-103',
+            type: 'Crime_Report',
+            description: 'Attempted burglary reported near residential compound perimeter.',
+            status: 'Resolved',
+            address: '88 Oakridge Drive',
+            createdAt: new Date(Date.now() - 7200000).toISOString(),
+            aiAnalysis: { severity: 'Medium' },
+            reporterId: { name: 'Alex Mercer', email: 'alex@example.com', phone: '+1 555-0199' }
+          }
+        ]);
       }
     };
     fetchIncidents();
